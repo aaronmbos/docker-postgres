@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  postgres-db:
+    image: postgres:13
+    environment: 
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432"
+    networks: 
+      - pg_network
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  pgadmin4:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "8088:80"  
+    networks:
+      - pg_network
+      
+networks: 
+  pg_network:
+    driver: bridge
+
+volumes: 
+  db_data:
